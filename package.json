@@ -1,0 +1,30 @@
+{
+  "name": "rethink-config",
+  "version": "0.1.0",
+  "description": "Configure your RethinkDB with one JSON object.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChrisCates/rethink-config.git"
+  },
+  "keywords": [
+    "Chris",
+    "Cates",
+    "RethinkDB",
+    "Config",
+    "Configuration"
+  ],
+  "author": "Chris Cates",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ChrisCates/rethink-config/issues"
+  },
+  "homepage": "https://github.com/ChrisCates/rethink-config#readme",
+  "dependencies": {
+    "async": "^1.5.2",
+    "rethinkdbdash": "^2.2.15"
+  }
+}

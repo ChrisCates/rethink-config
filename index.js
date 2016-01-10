@@ -1,4 +1,5 @@
 var r, async = require('async');
+process.env.BLUEBIRD_DEBUG = 0;
 
 module.exports = function(config) {
   if (!config) throw 'Must supply a config.';

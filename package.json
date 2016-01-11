@@ -1,6 +1,6 @@
 {
   "name": "rethink-config",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Configure your RethinkDB with one JSON object.",
   "main": "index.js",
   "scripts": {

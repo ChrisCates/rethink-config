@@ -3,9 +3,9 @@ process.env.BLUEBIRD_DEBUG = 0;
 
 module.exports = function(config) {
   if (!config) throw 'Must supply a config.';
-  if (!config.database) throw 'Must supply a database';
-
-  r = require('rethinkdbdash')(config.setup);
+  if (!config.database) throw 'Must supply a database.';
+  if (!config.r) throw 'Must supply RethinkDBDash.'
+  r = config.r;
 
   async.series([
     function(callback) {

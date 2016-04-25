@@ -1,7 +1,6 @@
 var r, async = require('async');
-process.env.BLUEBIRD_DEBUG = 0;
 
-module.exports = function(config) {
+module.exports = function(config,cb) {
   if (!config) throw 'Must supply a config.';
   if (!config.database) throw 'Must supply a database.';
   if (!config.r) throw 'Must supply RethinkDBDash.'
@@ -13,44 +12,54 @@ module.exports = function(config) {
       .then(function(bool) {
         if (bool == false) {
           r.dbCreate(config.database)
-          .then(function() { callback(null); })
-          .error(function(err) { callback(err); });
-        } else { callback(null); }
+          .then(function() {
+            callback();
+          })
+        } else {
+          callback();
+        }
       })
     },
     function(callback) {
-      if (config.tables) {
-        async.each(config.tables, function(table, callback2) {
-          r.db(config.database).tableList().contains(table)
-          .then(function(bool) {
-            if (bool == false) {
-              r.db(config.database).tableCreate(table)
-              .then(function() { callback2(null); })
-              .error(function(err) { callback2(err); });
-            } else { callback2(null) }
-          })
-        }, function(err) {
-          callback(null);
+      async.each(config.tables, function(table, callback2) {
+        r.db(config.database).tableList().contains(table)
+        .then(function(bool) {
+          if (bool == false) {
+            r.db(config.database)
+            .tableCreate(table)
+            .then(function() {
+              callback2()
+            })
+          } else {
+            callback2()
+          }
         })
-      } else {
-        callback(null);
-      }
+      }, function(err) {
+        if (err) callback(err)
+        callback()
+      })
     },
     function(callback) {
-      if (config.indexes) {
-        async.each(config.indexes, function(index, callback2) {
-          r.db(config.database).table(index.table).indexList().contains(index.index)
-          .then(function(bool) {
-            if (bool == false) {
-              r.db(config.database).table(index.table).indexCreate(index.index)
-              .then(function() { callback2(null); })
-              .error(function(err) { callback2(err); });
-            } else { callback2(null); }
-          })
+      async.each(config.indexes, function(index, callback2) {
+        r.db(config.database).table(index.table).indexList().contains(index.index)
+        .then(function(bool) {
+          if (bool == false) {
+            r.db(config.database)
+            .table(index.table)
+            .indexCreate(index.index)
+            .then(function() {
+              callback2()
+            })
+          } else {
+            callback2()
+          }
         })
-      } else {
-        callback(null);
-      }
+      }, function(err) {
+        if (err) callback(err)
+        callback()
+      })
     }
-  ])
+  ], function(err) {
+    cb(err)
+  })
 }

@@ -1,10 +1,11 @@
 {
   "name": "rethink-config",
-  "version": "0.1.2",
+  "version": "0.3.0",
   "description": "Configure your RethinkDB with one JSON object.",
   "main": "index.js",
   "scripts": {
-    "test": "node index.js"
+    "test": "mocha test.js",
+    "nyc": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
     "type": "git",
@@ -26,5 +27,10 @@
   "dependencies": {
     "async": "^1.5.2",
     "rethinkdbdash": "^2.2.15"
+  },
+  "devDependencies": {
+    "coveralls": "^2.11.9",
+    "mocha-as-promised": "^2.0.0",
+    "nyc": "^6.4.0"
   }
 }

@@ -16,9 +16,6 @@
 ### Installation
 `npm install rethink-config --save`
 
-### Installation
-`npm install rethink-config --save`
-
 ### Configuration
 In order to configure your database look at the following example. This example is also in `test.js` in the root directory of this Git repo.
 
@@ -50,6 +47,8 @@ rethinkConfig({
       "index": "IndexOne"
     }
   ]
+}, function(err) {
+  if (err) throw err
 })
 ```
 

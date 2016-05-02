@@ -1,7 +1,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/ChrisCates/rethink-config/badge.svg?branch=master)](https://coveralls.io/github/ChrisCates/rethink-config?branch=master)
 [![Build Status](https://travis-ci.org/ChrisCates/rethink-config.svg?branch=master)](https://travis-ci.org/ChrisCates/rethink-config)
 
-[![NPM](https://nodei.co/npm/redis.auth.png)](https://nodei.co/npm/rethink-config/)
+[![NPM](https://nodei.co/npm/rethink-config.png)](https://nodei.co/npm/rethink-config/)
 
 # rethink-config
 ## Configure databases, tables and indexes with Rethink Config.

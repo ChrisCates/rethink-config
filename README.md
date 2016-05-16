@@ -3,7 +3,7 @@
 
 [![NPM](https://nodei.co/npm/rethink-config.png)](https://nodei.co/npm/rethink-config/)
 
-# rethink-config
+![rethink-config](./rethink-config-banner.png)
 ## Configure databases, tables and indexes with Rethink Config.
 ### By Chris Cates :star:
 - :mailbox: hello@chriscates.ca

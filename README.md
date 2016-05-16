@@ -1,3 +1,4 @@
+![rethink-config](./rethink-config-banner.png)
 [![Coverage Status](https://coveralls.io/repos/github/ChrisCates/rethink-config/badge.svg?branch=master)](https://coveralls.io/github/ChrisCates/rethink-config?branch=master)
 [![Build Status](https://travis-ci.org/ChrisCates/rethink-config.svg?branch=master)](https://travis-ci.org/ChrisCates/rethink-config)
 

@@ -42,8 +42,7 @@ describe("Rethink Config", function() {
   it("Should create a test database", function(done) {
     this.timeout(5000);
 
-    require("./index.js")({
-      "r": r,
+    require("./index.js")(r, {
       //Specify the database
       "database": "RethinkConfig",
       //Specify your tables in an array.
@@ -75,8 +74,7 @@ describe("Rethink Config", function() {
 
     require.uncache("./index.js")
 
-    require("./index.js")({
-      "r": r,
+    require("./index.js")(r, {
       //Specify the database
       "database": "RethinkConfig",
       //Specify your tables in an array.

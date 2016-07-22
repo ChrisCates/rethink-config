@@ -1,10 +1,8 @@
 var r, async = require('async');
 
-module.exports = function(config,cb) {
+module.exports = function(r, config,cb) {
   if (!config) throw 'Must supply a config.';
   if (!config.database) throw 'Must supply a database.';
-  if (!config.r) throw 'Must supply RethinkDBDash.'
-  r = config.r;
 
   async.series([
     function(callback) {

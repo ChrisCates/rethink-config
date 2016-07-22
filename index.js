@@ -20,10 +20,10 @@ module.exports = function(r, config,cb) {
     },
     function(callback) {
       async.each(config.tables, function(tableOptions, callback2) {
-        var table, options
+        var table, options;
         if(typeof tableOptions === 'string') {
-          table = tableOptions
-          options = {}
+          table = tableOptions;
+          options = {};
         } else {
           table = tableOptions.table;
           options = tableOptions;

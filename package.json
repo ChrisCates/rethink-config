@@ -19,6 +19,9 @@
     "Configuration"
   ],
   "author": "Chris Cates",
+  "contributors": [
+    "Kavanaugh Latiolais <kav@liffft.com>"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/ChrisCates/rethink-config/issues"

@@ -46,7 +46,10 @@ describe("Rethink Config", function() {
       //Specify the database
       "database": "RethinkConfig",
       //Specify your tables in an array.
-      "tables": ["One", "Two", "Three"],
+      "tables": [
+        "One",
+        { table:"Two", primaryKey:"twoId" },
+        "Three"],
       //Specify your indexes in an array
       "indexes": [
         //Each index needs to be specified a table and an index.

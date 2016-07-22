@@ -25,13 +25,16 @@ In order to configure your database look at the following example. This example 
 var r = require("rethinkdbdash")();
 var rethinkConfig = require ('./index');
 
-rethinkConfig({
-  //Specify the rethinkdbdash object.
-  "r": r,
+rethinkConfig(r, {
   //Specify the database
   "database": "Hello",
   //Specify your tables in an array.
-  "tables": ["One", "Two", "Three"],
+  //Specify your tables in an array.
+  "tables": [
+    "One",
+    // Use an object to specify parameters to table
+    { table:"Two", primaryKey:"twoId" },
+    "Three"],
   //Specify your indexes in an array
   "indexes": [
     //Each index needs to be specified a table and an index.

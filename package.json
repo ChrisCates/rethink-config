@@ -28,13 +28,13 @@
   },
   "homepage": "https://github.com/ChrisCates/rethink-config#readme",
   "dependencies": {
-    "async": "^1.5.2",
+    "async": "^2.0.1",
     "rethinkdbdash": "^2.2.15"
   },
   "devDependencies": {
+    "chai": "^3.5.0",
     "coveralls": "^2.11.9",
     "mocha": "^2.5.3",
-    "mocha-as-promised": "^2.0.0",
     "nyc": "^6.4.0"
   }
 }

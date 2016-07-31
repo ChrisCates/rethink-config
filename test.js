@@ -107,7 +107,42 @@ describe("Rethink Config", function() {
       });
     });
   })
+  it("Should create a indexes", function(done) {
+    this.timeout(15000);
+
+    rethinkConfig(r, {
+      //Specify the database
+      "database": "RethinkConfig",
+      //Specify your tables in an array.
+      "tables": [
+        "One",
+        "Three"],
+        "indexes": [
+          {
+            "table": "One",
+            "index": "IndexOne"
+          },
+          {
+            "table": "One",
+            "index": "IndexTwo"
+          }
+        ]
+    }, function(err) {
+      if (err) throw err
+      r.db("RethinkConfig")
+      .table("One")
+      .indexList()
+      .run()
+      .then(function(response) {
+        expect(response).to.contain('IndexOne');
+        expect(response).to.contain('IndexTwo');
+        done();
+      })
+    })
+  })
   it("Should not overwrite existing database", function(done) {
+    this.timeout(15000);
+
     rethinkConfig(r, {
       "database": "RethinkConfig",
       "tables": ["One"]
@@ -124,6 +159,83 @@ describe("Rethink Config", function() {
         .then(function(response) {
           expect(response).to.contain('One');
           expect(response).to.contain('Two');
+          done();
+        });
+      });
+    });
+  })
+  it("Should not overwrite existing table", function(done) {
+    this.timeout(15000);
+
+    rethinkConfig(r, {
+      "database": "RethinkConfig",
+      "tables": [
+        { table:"Two", primaryKey:"twoId" }
+        ]
+    }, function(err) {
+      if (err) throw err
+      rethinkConfig(r, {
+        "database": "RethinkConfig",
+        "tables": [
+          { table:"Two", primaryKey:"OtherId" }
+          ]
+      }, function(err) {
+        if (err) throw err
+        r.db("RethinkConfig")
+        .table("Two")
+        .config()
+        .run()
+        .then(function(response) {
+          expect(response.primary_key).to.equal('twoId');
+          done();
+        });
+      });
+    });
+  })
+  it("Should not overwrite existing index", function(done) {
+    this.timeout(15000);
+
+    rethinkConfig(r, {
+      "database": "RethinkConfig",
+      "tables": [
+        "One",
+        "Three"],
+        "indexes": [
+          {
+            "table": "One",
+            "index": "IndexOne"
+          },
+          {
+            "table": "One",
+            "index": "IndexTwo"
+          }
+        ]
+    }, function(err) {
+      if (err) throw err
+      rethinkConfig(r, {
+        "database": "RethinkConfig",
+        "tables": [
+          "One",
+          "Three"],
+          "indexes": [
+            {
+              "table": "One",
+              "index": "IndexOne"
+            },
+            {
+              "table": "One",
+              "index": "IndexTwo"
+            }
+          ]
+      }, function(err) {
+        if (err) throw err
+        r.db("RethinkConfig")
+        .table("One")
+        .indexList()
+        .run()
+        .then(function(response) {
+          expect(response).to.contain('IndexOne');
+          expect(response).to.contain('IndexTwo');
           done();
         });
       });

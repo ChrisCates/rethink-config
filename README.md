@@ -42,15 +42,17 @@ rethinkConfig(r, {
       "table": "One",
       "index": "lastName"
     },
+    //To create a compound index provide a list of fields
     {
       "table": "One",
       "index": "fullName",
       "fields": ["firstName", "lastName"]
     },
+    // Or create an index using an arbitrary expression using ReQL or javascript
     {
       "table": "Two",
       "index": "IndexOne",
-      "expr"; r.add(r.row("last_name"), "_", r.row("first_name"))
+      "expr": r.add(r.row("last_name"), "_", r.row("first_name"))
     }
   ]
 }, function(err) {

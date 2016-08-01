@@ -107,7 +107,7 @@ describe("Rethink Config", function() {
       });
     });
   })
-  it("Should create indexes", function(done) {
+  it("Should create basic indexes", function(done) {
     this.timeout(15000);
 
     rethinkConfig(r, {
@@ -139,6 +139,201 @@ describe("Rethink Config", function() {
         done();
       })
     })
+  })
+  it("Should create a compound index", function(done) {
+    this.timeout(15000);
+    rethinkConfig(r, {
+      //Specify the database
+      "database": "RethinkConfig",
+      //Specify your tables in an array.
+      "tables": [
+        "One",
+        "Three"],
+        "indexes": [
+          {
+            "table": "One",
+            "index": "IndexOne",
+            "fields": ["lastName", "firstName"]
+          }
+        ]
+    }, function(err) {
+      if (err) throw err
+      r.db("RethinkConfig")
+      .table("One")
+      .indexStatus("IndexOne")
+      .run()
+      .then(function(response) {
+        expect(response[0].query).to.contain('{ return r.expr([r.row("lastName"), r.row("firstName")]); }');
+        done();
+      })
+    })
+  })
+  it("Should create a multi index", function(done) {
+    this.timeout(15000);
+    rethinkConfig(r, {
+      //Specify the database
+      "database": "RethinkConfig",
+      //Specify your tables in an array.
+      "tables": [
+        "One",
+        "Three"],
+        "indexes": [
+          {
+            "table": "One",
+            "index": "IndexOne",
+            "multi": true,
+          }
+        ]
+    }, function(err) {
+      if (err) throw err
+      r.db("RethinkConfig")
+      .table("One")
+      .indexStatus("IndexOne")
+      .run()
+      .then(function(response) {
+        expect(response[0].multi).to.be.true;
+        done();
+      })
+    })
+  })
+  it("Should create a geo index", function(done) {
+    this.timeout(15000);
+    rethinkConfig(r, {
+      //Specify the database
+      "database": "RethinkConfig",
+      //Specify your tables in an array.
+      "tables": [
+        "One",
+        "Three"],
+        "indexes": [
+          {
+            "table": "One",
+            "index": "IndexOne",
+            "geo": true,
+          }
+        ]
+    }, function(err) {
+      if (err) throw err
+      r.db("RethinkConfig")
+      .table("One")
+      .indexStatus("IndexOne")
+      .run()
+      .then(function(response) {
+        expect(response[0].geo).to.be.true;
+        done();
+      })
+    })
+  })
+  it("Should create an arbitrary expression index", function(done) {
+    this.timeout(15000);
+    rethinkConfig(r, {
+      //Specify the database
+      "database": "RethinkConfig",
+      //Specify your tables in an array.
+      "tables": [
+        "One",
+        "Three"],
+        "indexes": [
+          {
+            "table": "One",
+            "index": "IndexOne",
+            "expr": r.add(r.row("last_name"), "_", r.row("first_name")),
+          }
+        ]
+    }, function(err) {
+      if (err) throw err
+      r.db("RethinkConfig")
+      .table("One")
+      .indexStatus("IndexOne")
+      .run()
+      .then(function(response) {
+        expect(response[0].query).to.contain('r.add(r.row("last_name"), "_", r.row("first_name"))');
+        done();
+      })
+    })
+  })
+  it("Should create an arbitrary expression multi index", function(done) {
+    this.timeout(15000);
+    rethinkConfig(r, {
+      //Specify the database
+      "database": "RethinkConfig",
+      //Specify your tables in an array.
+      "tables": [
+        "One",
+        "Three"],
+        "indexes": [
+          {
+            "table": "One",
+            "index": "IndexOne",
+            "expr": function(user) {
+              return user("equipment").map(function(equipment) {
+                return [ user("id"), equipment ];
+              });
+            },
+            "multi": true
+          }
+        ]
+    }, function(err) {
+      if (err) throw err
+      r.db("RethinkConfig")
+      .table("One")
+      .indexStatus("IndexOne")
+      .run()
+      .then(function(response) {
+        expect(response[0].multi).to.be.true;
+        expect(response[0].query).to.contain('("equipment").map(function ');
+        done();
+      })
+    })
+  })
+  it("Should not overwrite existing index", function(done) {
+    this.timeout(15000);
+
+    rethinkConfig(r, {
+      "database": "RethinkConfig",
+      "tables": [
+        "One",
+        "Three"],
+        "indexes": [
+          {
+            "table": "One",
+            "index": "IndexOne"
+          },
+          {
+            "table": "One",
+            "index": "IndexTwo"
+          }
+        ]
+    }, function(err) {
+      if (err) throw err
+      rethinkConfig(r, {
+        "database": "RethinkConfig",
+        "tables": [
+          "One",
+          "Three"],
+          "indexes": [
+            {
+              "table": "One",
+              "index": "IndexOne"
+            },
+            {
+              "table": "One",
+              "index": "IndexTwo"
+            }
+          ]
+      }, function(err) {
+        if (err) throw err
+        r.db("RethinkConfig")
+        .table("One")
+        .indexList()
+        .run()
+        .then(function(response) {
+          expect(response).to.contain('IndexOne');
+          expect(response).to.contain('IndexTwo');
+          done();
+        });
+      });
+    });
   })
   it("Should not overwrite existing database", function(done) {
     this.timeout(15000);
@@ -187,55 +382,6 @@ describe("Rethink Config", function() {
         .run()
         .then(function(response) {
           expect(response.primary_key).to.equal('twoId');
-          done();
-        });
-      });
-    });
-  })
-  it("Should not overwrite existing index", function(done) {
-    this.timeout(15000);
-
-    rethinkConfig(r, {
-      "database": "RethinkConfig",
-      "tables": [
-        "One",
-        "Three"],
-        "indexes": [
-          {
-            "table": "One",
-            "index": "IndexOne"
-          },
-          {
-            "table": "One",
-            "index": "IndexTwo"
-          }
-        ]
-    }, function(err) {
-      if (err) throw err
-      rethinkConfig(r, {
-        "database": "RethinkConfig",
-        "tables": [
-          "One",
-          "Three"],
-          "indexes": [
-            {
-              "table": "One",
-              "index": "IndexOne"
-            },
-            {
-              "table": "One",
-              "index": "IndexTwo"
-            }
-          ]
-      }, function(err) {
-        if (err) throw err
-        r.db("RethinkConfig")
-        .table("One")
-        .indexList()
-        .run()
-        .then(function(response) {
-          expect(response).to.contain('IndexOne');
-          expect(response).to.contain('IndexTwo');
           done();
         });
       });

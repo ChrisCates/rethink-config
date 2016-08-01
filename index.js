@@ -51,9 +51,11 @@ module.exports = function(r, config,cb) {
         r.db(config.database).table(index.table).indexList().contains(index.index)
         .then(function(bool) {
           if (bool == false) {
+            var expr = index.fields ? index.fields.map(function(fieldName){return r.row(fieldName);}) : index.expr
+            var params = {multi: index.multi, geo: index.geo}
             r.db(config.database)
             .table(index.table)
-            .indexCreate(index.index)
+            .indexCreate(index.index, expr, params)
             .then(function() {
               callback2()
             })

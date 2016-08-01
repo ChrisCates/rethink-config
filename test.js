@@ -62,7 +62,7 @@ describe("Rethink Config", function() {
       })
     });
   })
-  it("Should create a tables", function(done) {
+  it("Should create tables", function(done) {
     this.timeout(15000);
 
     rethinkConfig(r, {
@@ -107,7 +107,7 @@ describe("Rethink Config", function() {
       });
     });
   })
-  it("Should create a indexes", function(done) {
+  it("Should create indexes", function(done) {
     this.timeout(15000);
 
     rethinkConfig(r, {

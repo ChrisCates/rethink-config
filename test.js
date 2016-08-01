@@ -140,6 +140,34 @@ describe("Rethink Config", function() {
       })
     })
   })
+  it.only("Should create a arbitrary expression index", function(done) {
+    this.timeout(15000);
+    rethinkConfig(r, {
+      //Specify the database
+      "database": "RethinkConfig",
+      //Specify your tables in an array.
+      "tables": [
+        "One",
+        "Three"],
+        "indexes": [
+          {
+            "table": "One",
+            "index": "IndexOne",
+            "expr": r.add(r.row("last_name"), "_", r.row("first_name")),
+          }
+        ]
+    }, function(err) {
+      if (err) throw err
+      r.db("RethinkConfig")
+      .table("One")
+      .indexStatus("IndexOne")
+      .run()
+      .then(function(response) {
+        expect(response[0].query).to.contain('r.add(r.row("last_name"), "_", r.row("first_name"))');
+        done();
+      })
+    })
+  })
   it("Should not overwrite existing database", function(done) {
     this.timeout(15000);
 

@@ -53,7 +53,7 @@ module.exports = function(r, config,cb) {
           if (bool == false) {
             r.db(config.database)
             .table(index.table)
-            .indexCreate(index.index)
+            .indexCreate(index.index, index.expr)
             .then(function() {
               callback2()
             })

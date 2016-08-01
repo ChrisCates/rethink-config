@@ -18,7 +18,7 @@
 `npm install rethink-config --save`
 
 ### Configuration
-In order to configure your database look at the following example. This example is also in `test.js` in the root directory of this Git repo.
+In order to configure your database look at the following example. Additional examples are also in `test.js` in the root directory of this Git repo.
 
 ```javascript
 //In the real world you would use var rethinkConfig = require ('rethink-config');
@@ -40,15 +40,17 @@ rethinkConfig(r, {
     //Each index needs to be specified a table and an index.
     {
       "table": "One",
-      "index": "IndexOne"
+      "index": "lastName"
     },
     {
       "table": "One",
-      "index": "IndexTwo"
+      "index": "fullName",
+      "fields": ["firstName", "lastName"]
     },
     {
       "table": "Two",
-      "index": "IndexOne"
+      "index": "IndexOne",
+      "expr"; r.add(r.row("last_name"), "_", r.row("first_name"))
     }
   ]
 }, function(err) {
